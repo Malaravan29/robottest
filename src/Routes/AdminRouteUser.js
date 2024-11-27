@@ -5,9 +5,11 @@ import { verifyAdminToken } from "../Middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/admin/user/:email", verifyAdminToken, async (req, res) => {
+//Route to get user details associated with a user's email
+router.get("/admin/user", verifyAdminToken, async (req, res) => {
   try {
-    const { email } = req.params;
+    const { email } = req.query;
+    
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -23,21 +25,22 @@ router.get("/admin/user/:email", verifyAdminToken, async (req, res) => {
 });
 
 // Route to get robot details associated with a user's email
-router.get("/admin/robots/:email", verifyAdminToken, async (req, res) => {
-    try {
-      const { email } = req.params;
-  
-      // Find robots associated with the user's email
-      const robots = await Robot.find({ emailId: email }); // Assuming `userEmail` is a field in the Robot model
-  
-      if (!robots || robots.length === 0) {
-        return res.status(404).json({ success: false, message: "No robots found for this email" });
-      }
-  
-      return res.status(200).json({ success: true, robots });
-    } catch (error) {
-      return res.status(500).json({ success: false, error: error.message });
+router.get("/admin/robots", verifyAdminToken, async (req, res) => {
+  try {
+    const { emailId } = req.query;
+
+    // Find robots associated with the user's email
+    const robots = await Robot.find({ emailId: emailId }); // Assuming `userEmail` is a field in the Robot model
+
+    if (!robots || robots.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No robots found for this email" });
     }
-  });
-  
+
+    return res.status(200).json({ success: true, robots });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
 export default router;
