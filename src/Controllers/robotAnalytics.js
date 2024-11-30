@@ -13,6 +13,7 @@ export const saveRobotAnalytics = async (req, res) => {
         motorRunningTime: { startingTime: motorStartTime, endingTime: motorEndTime },
         uvLightRunningTime: { startingTime: uvLightStartTime, endingTime: uvLightEndTime },
       },
+      detectionDetails,
     } = req.body;
 
     // Create a new instance of RobotAnalytics
@@ -35,6 +36,7 @@ export const saveRobotAnalytics = async (req, res) => {
           endingTime: uvLightEndTime
         },
       },
+      detectionDetails, 
     });
 
     // Save the robot analytics data to the database

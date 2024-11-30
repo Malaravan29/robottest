@@ -3,6 +3,25 @@ import { Schema as MongooseSchema, model } from "mongoose";
 // Regular expression to validate hh:mm:ss format in 24-hour time
 const timeRegex = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
 
+const DetectionDetailSchema = new MongooseSchema({
+  Object_Name: {
+    type: String,
+    required: true,
+  },
+  Object_Count: {
+    type: String,
+    required: true,
+  },
+  DistanceAndTime: {
+    type: Map,
+    of: new MongooseSchema({
+      Distance: { type: Number, required: true },
+      Time: { type: Number, required: true },
+    }),
+    required: true,
+  },
+});
+
 // Define schema for robot analytics
 const RobotAnalyticsSchema = new MongooseSchema({
   robotId: {
@@ -82,6 +101,7 @@ const RobotAnalyticsSchema = new MongooseSchema({
       },
     },
   },
+  detectionDetails: [DetectionDetailSchema], // Array of detection details
 });
 
 const RobotAnalytics = model("RobotAnalytics", RobotAnalyticsSchema);

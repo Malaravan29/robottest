@@ -3,9 +3,14 @@ import User from '../Models/User.js';
 
 // Controller to get version and user details based on email
 export const getVersionAndUserByEmail = async (req, res) => {
- 
   try {
-    const email = req.user.email;
+    // Extract email from query parameters
+    const email = req.query.email;
+
+    // Check if the email query parameter is provided
+    if (!email) {
+      return res.status(400).json({ error: 'Email query parameter is required' });
+    }
 
     // Get the latest app version
     const latestVersion = await Version.findOne().sort({ createdAt: -1 }); // Assuming you want the latest version
@@ -24,8 +29,8 @@ export const getVersionAndUserByEmail = async (req, res) => {
       user: {
         email: user.email,
         manualMapping: user.manualMapping,
-        objectDisinfection: user.objectDisinfection
-      }
+        objectDisinfection: user.objectDisinfection,
+      },
     };
 
     res.status(200).json(responseData);
