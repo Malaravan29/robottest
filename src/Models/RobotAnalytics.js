@@ -12,6 +12,11 @@ const DetectionDetailSchema = new MongooseSchema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    required: true,
+    enum: ['Completed', 'Partial'], // Validation for specific values
+  },
   DistanceAndTime: {
     type: Map,
     of: new MongooseSchema({
