@@ -1,5 +1,6 @@
 import Robot from "../Models/Robot.js";
 
+//add query parameters
 export const getRobotsByEmail = async (req, res) => {
   try {
     const { email: tokenEmail, role } = req.user; // Extract email and role from the token
