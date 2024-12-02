@@ -7,6 +7,7 @@ const router = Router();
 router.post("/map-mappings/save", saveMappingData);
 //get map data
 router.get("/get-map-data", getMappingData);
+
 //get particular map Image
 router.get("/map-image",  getMapImage);
 
