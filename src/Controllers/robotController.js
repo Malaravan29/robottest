@@ -11,12 +11,11 @@ export const getRobotsByEmail = async (req, res) => {
       // Fetch robots for a specific user based on their email
       robots = await Robot.find({ emailId: email }).exec();
     } else if (["Hr", "AdminController", "ProjectManage"].includes(role)) {
-      // Fetch robots based on the query email if provided, otherwise fetch all
-      if (queryEmail) {
-        robots = await Robot.find({ emailId: queryEmail }).exec();
-      } else {
-        robots = await Robot.find().exec();
+      // Require query email to fetch robots for privileged roles
+      if (!queryEmail) {
+        return res.status(400).json({ message: "Query parameter 'email' is required" });
       }
+      robots = await Robot.find({ emailId: queryEmail }).exec();
     } else {
       return res.status(403).json({ message: "Access denied" });
     }
@@ -30,3 +29,4 @@ export const getRobotsByEmail = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
