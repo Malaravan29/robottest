@@ -23,6 +23,14 @@ const adminSchema = new Schema(
       required: true,
       minlength: [8, "Password cannot be shorter than 8 characters."],
     },
+    manualMapping: {
+      type: String,
+      enum: ["enabled", "disabled"],
+    },
+    objectDisinfection: {
+      type: String,
+      enum: ["enabled", "disabled"],
+    },
     otp: { type: String },
     forgotPasswordOtp: { type: String },
     isFirstTime: { type: Boolean, default: true },

@@ -1,41 +1,52 @@
 import Version from '../Models/Version.js';
 import User from '../Models/User.js';
+import Admin from '../Models/Admin.js'; // Import Admin model
 
-// Controller to get version and user details based on email
+// Controller to get version and user/admin details based on email
 export const getVersionAndUserByEmail = async (req, res) => {
   try {
-    // Extract email from query parameters
-    const email = req.query.email;
-
-    // Check if the email query parameter is provided
-    if (!email) {
-      return res.status(400).json({ error: 'Email query parameter is required' });
-    }
+    const { email, role } = req.user; // Extract email and role from the access token
 
     // Get the latest app version
-    const latestVersion = await Version.findOne().sort({ createdAt: -1 }); // Assuming you want the latest version
+    const latestVersion = await Version.findOne().sort({ createdAt: -1 }); // Fetch the latest version
 
-    // Find the user by email
-    const user = await User.findOne({ email }, 'email manualMapping objectDisinfection'); // Fetch only the required fields
+    let details;
 
-    // Check if user exists
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+    // Query the appropriate model based on the role
+    if (role === 'user') {
+      const user = await User.findOne({ email }, 'email manualMapping objectDisinfection');
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      details = {
+        email: user.email,
+        manualMapping: user.manualMapping,
+        objectDisinfection: user.objectDisinfection,
+      };
+    } else if (role === "Hr", "ProjectManager", "AdminController") {
+      const admin = await Admin.findOne({ email }, 'email role manualMapping objectDisinfection');
+      if (!admin) {
+        return res.status(404).json({ error: 'Admin not found' });
+      }
+      details = {
+        email: admin.email,
+        manualMapping: admin.manualMapping,
+        objectDisinfection: admin.objectDisinfection,
+      };
+    } else {
+      return res.status(400).json({ error: 'Invalid role provided in token' });
     }
 
     // Construct the response data
     const responseData = {
       version: latestVersion ? latestVersion.version : null,
-      user: {
-        email: user.email,
-        manualMapping: user.manualMapping,
-        objectDisinfection: user.objectDisinfection,
-      },
+      role, // Include role from token in the response
+      details,
     };
 
     res.status(200).json(responseData);
   } catch (error) {
-    console.error('Error fetching version and user details:', error);
+    console.error('Error fetching version and details:', error);
     res.status(500).json({ error: 'Server error' });
   }
 };
