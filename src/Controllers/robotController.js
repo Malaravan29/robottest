@@ -2,15 +2,15 @@ import Robot from "../Models/Robot.js";
 
 export const getRobotsByEmail = async (req, res) => {
   try {
-    // Extract email from req.params or req.query
-    const email = req.params.email || req.query.email;
+    // Extract email from req.user or req.query
+    const email = req.user?.email || req.query.email;
 
     // Validate if email exists
     if (!email) {
       return res.status(400).json({ message: "Email is required" });
     }
 
-    // Use the correct model 'Robot' to find robots associated with the provided email
+    // Query the database for robots associated with the email
     const robots = await Robot.find({ emailId: email }).exec();
 
     // Check if robots exist
