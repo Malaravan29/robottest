@@ -8,7 +8,7 @@ export const getRobotsByEmail = async (req, res) => {
     }
 
     // Find robots associated with the provided email
-    const robots = await Robot.find({ emailId: email }).exec();
+    const robots = await robots.find({ emailId: email }).exec();
 
     if (!robots || robots.length === 0) {
       return res.status(404).json({ message: "No robots found for this user" });
