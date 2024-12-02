@@ -2,22 +2,21 @@ import Robot from "../Models/Robot.js";
 
 export const getRobotsByEmail = async (req, res) => {
   try {
-    const { email: tokenEmail, role } = req.user; // Extract email and role from token
-    const { email } = req.query; // Retrieve email from query params
+    const { email, role } = req.user; // Assuming email and role are extracted from the verified token
+    const queryEmail = req.query.email; // Extract the email query parameter if provided
 
     let robots;
 
     if (role === "user") {
-      // Ensure the query email matches the token email for users
-      if (!email || email !== tokenEmail) {
-        return res.status(403).json({ message: "Access denied" });
-      }
+      // Fetch robots for a specific user based on their email
       robots = await Robot.find({ emailId: email }).exec();
-    } else if (["Hr", "AdminController", "ProjectManager"].includes(role)) {
-      // Fetch robots based on query email or all robots if no email is provided
-      robots = email
-        ? await Robot.find({ emailId: email }).exec()
-        : await Robot.find().exec();
+    } else if (["Hr", "AdminController", "ProjectManage"].includes(role)) {
+      // Fetch robots based on the query email if provided, otherwise fetch all
+      if (queryEmail) {
+        robots = await Robot.find({ emailId: queryEmail }).exec();
+      } else {
+        robots = await Robot.find().exec();
+      }
     } else {
       return res.status(403).json({ message: "Access denied" });
     }
