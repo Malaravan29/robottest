@@ -20,7 +20,6 @@ const orientationSchema = new Schema(
 );
 
 const oneModeSchema = new Schema({
-  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   mode: { type: String, required: true },
   emailId: { type: String, required: true },
   robotId: { type: String, required: true },

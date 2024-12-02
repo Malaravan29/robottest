@@ -32,14 +32,9 @@ const modeConfig = {
 
 export const singleFiveModeApi = async (req, res) => {
   try {
-    const userId = req.user.id;
+
     const { mode } = req.body;
 
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized: User not found." });
-    }
-
-    
     if (!mode) {
       return res.status(400).json({
         message: "Missing mode parameter. Please provide a valid mode."
@@ -70,7 +65,7 @@ export const singleFiveModeApi = async (req, res) => {
     const modeData = fields.reduce((data, field) => {
       data[field] = req.body[field];
       return data;
-    }, { userId }); 
+    }, {}); 
 
     const result = await model.create(modeData);
     return res.status(201).json({ message: `${modeName} data saved successfully.`, data: result });
@@ -85,18 +80,22 @@ export const singleFiveModeApi = async (req, res) => {
 
 export const getModeRobotId = async (req, res) => {
   try {
-    const { email } = req.user; // Extract email from verified token
-
-    // Query the database for records matching the email
-    const records = await OneModeModel.find({ emailId: email });
-
-    if (!records || records.length === 0) {
-      return res.status(404).json({ message: "No records found for the specified email" });
+    const { robotId } = req.query;
+ 
+    if (!robotId) {
+      return res.status(400).json({ message: "Missing robotId parameter." });
     }
 
-    return res.status(200).json(records);
+    const modes = await OneModeModel.find({ robotId });
+
+    if (modes.length === 0) {
+      return res.status(404).json({ message: `No modes found for robotId "${robotId}".` });
+    }
+
+    return res.status(200).json({ message: "Modes retrieved successfully.", data: modes });
+
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server error", error: error.message });
- }
+    console.error("Error retrieving modes:", error);
+    return res.status(500).json({ message: "Server error.", error: error.message });
+  }
 };
