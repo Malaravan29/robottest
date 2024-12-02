@@ -1,7 +1,6 @@
 import { Schema, model } from "mongoose";
 
 const dataSchema = new Schema({
-  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   
   emailId:{type:String ,required:true},
   robotId:{type:String,required:true},

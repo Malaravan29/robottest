@@ -11,7 +11,6 @@ const convertBase64ToBuffer = (base64String) => {
 // save Map
 export const saveMappingData = async (req, res) => {
   try {
-    const userId = req.user.id;
     const { emailId, robotId, map_image, map_name } = req.body;
 
     // Collect missing fields
@@ -41,7 +40,6 @@ export const saveMappingData = async (req, res) => {
     }
 
     const newMappingData = new noMode({
-      userId,
       emailId,
       robotId,
       map_image: imageBase64,
@@ -68,7 +66,6 @@ export const saveMappingData = async (req, res) => {
 // get Map Data
 const MAX_IMAGE_SIZE = 500 * 1024;
 export const getMappingData = async (req, res) => {
-  const userId = req.user.id;
   const { robotId } = req.query;
 
   if (!robotId) {
@@ -79,7 +76,7 @@ export const getMappingData = async (req, res) => {
   }
 
   try {
-    const data = await noMode.find({ userId, robotId });
+    const data = await noMode.find({ robotId });
     if (data.length === 0) {
       return res.status(200).json({
         success: false,
@@ -175,8 +172,7 @@ export const getMapImage = async (req, res) => {
 // Delete Map
 export const deleteMappingData = async (req, res) => {
   try {
-    const { id: userId } = req.user;
-    //const userId =req.user.id;
+  
     const { robotId, map_name } = req.query;
     console.log("params is ", req.query);
 
@@ -194,7 +190,6 @@ export const deleteMappingData = async (req, res) => {
     }
 
     const findAndDeletemapData = await noMode.findOne({
-      userId,
       robotId,
       map_name,
     });
