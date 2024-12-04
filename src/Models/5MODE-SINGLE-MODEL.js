@@ -44,6 +44,7 @@ const OneModeModel = model("FiveModeInOneModel", oneModeSchema);
 export const InitializationMode = OneModeModel.discriminator("Initialization", new Schema({
     emailId:{type:String ,required:true},
     robotId:{type:String,required:true},
+    subLocation: { type: String, required: true },
     position: [vectorSchema],
     orientation: [orientationSchema],
     status:{type:String,required:true},
