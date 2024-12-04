@@ -45,6 +45,7 @@ export const getprofileDetails = async (req, res) => {
       const adminDetails = {
         name: adminData.name,
         email: adminData.email,
+        phoneNumber: adminData.phoneNumber,
         employeeId: adminData.employeeId,
         role: adminData.role,
         manualMapping: adminData.manualMapping,

@@ -18,6 +18,10 @@ const adminSchema = new Schema(
       required: [true, "please provide valid email"],
       unique: true,
     },
+    phoneNumber: {
+      type: String,
+      required: [true, "Please provide a valid phone number"],
+    },
     password: {
       type: String,
       required: true,
