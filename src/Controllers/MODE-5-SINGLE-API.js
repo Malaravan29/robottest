@@ -29,10 +29,8 @@ const modeConfig = {
 };
 
 //save history
-
 export const singleFiveModeApi = async (req, res) => {
   try {
-
     const { mode } = req.body;
 
     if (!mode) {
@@ -41,10 +39,8 @@ export const singleFiveModeApi = async (req, res) => {
       });
     }
 
-
     const modeKey = Object.keys(modeConfig).find(key => modeConfig[key].modeName === mode);
 
-   
     if (!modeKey) {
       const validModes = Object.keys(modeConfig).map(key => modeConfig[key].modeName).join(", ");
       return res.status(400).json({
@@ -77,9 +73,9 @@ export const singleFiveModeApi = async (req, res) => {
 };
 
 // get history 
-
 export const getModeRobotId = async (req, res) => {
   try {
+    
     const { robotId } = req.query;
  
     if (!robotId) {

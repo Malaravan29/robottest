@@ -32,10 +32,8 @@ export const getprofileDetails = async (req, res) => {
 
       return res.status(200).json(userDetails);
     } else if (["Hr", "ProjectManager", "AdminController"].includes(role)) {
-      // Fetch admin details for other roles
-      const adminData = await Admin.findOne({ email }).select(
-        "name email employeeId role manualMapping objectDisinfection"
-      );
+      // Fetch full admin details for other roles
+      const adminData = await Admin.findOne({ email });
 
       if (!adminData) {
         return res.status(404).json({
@@ -44,10 +42,22 @@ export const getprofileDetails = async (req, res) => {
         });
       }
 
-      return res.status(200).json({
-        success: true,
-        data: adminData,
-      });
+      const adminDetails = {
+        name: adminData.name,
+        email: adminData.email,
+        employeeId: adminData.employeeId,
+        role: adminData.role,
+        manualMapping: adminData.manualMapping,
+        objectDisinfection: adminData.objectDisinfection,
+        otp: adminData.otp,
+        forgotPasswordOtp: adminData.forgotPasswordOtp,
+        isFirstTime: adminData.isFirstTime,
+        isOtpVerified: adminData.isOtpVerified,
+        createdAt: adminData.createdAt,
+        updatedAt: adminData.updatedAt,
+      };
+
+      return res.status(200).json(adminDetails);
     } else {
       // Role not recognized
       return res.status(403).json({ message: "Access denied. Invalid role." });
