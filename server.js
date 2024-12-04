@@ -7,7 +7,7 @@ import { verifyToken } from './src/Middleware/authMiddleware.js';
 
 import authRoutes from './src/Routes/authRoutes.js';
 import robotRoutes from './src/Routes/robotRoutes.js';
-import userRoutes from './src/Routes/userRoutes.js';
+import profileRoutes from './src/Routes/profileRoutes.js';
 import robotmsgRoutes from "./src/Routes/robotmsgRoutes.js"
 import Appdetails from "./src/Routes/Appcontroller.js.js";
 import robotanalytics from "./src/Routes/RobotAnalytics.js"
@@ -31,7 +31,7 @@ app.use(verifyToken); // Ensure token verification middleware is used correctly
 
 app.use('/', authRoutes);
 app.use('/', robotRoutes);
-app.use('/', userRoutes);
+app.use('/', profileRoutes);
 app.use('/', robotmsgRoutes);
 app.use('/', Appdetails);
 app.use('/', robotanalytics);

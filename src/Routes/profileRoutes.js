@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { getUserDetails, updateUserPhoneNumber } from '../Controllers/userControllers.js';
+import { getprofileDetails, updateUserPhoneNumber } from '../Controllers/profileControllers.js';
 
 const router = Router();
 
 // Route to get user details
-router.get('/user/details', getUserDetails);
+router.get('/profiledetails', getprofileDetails);
 
 // Route to update user phone number
 router.put('/user/phone', updateUserPhoneNumber);
